@@ -1,0 +1,85 @@
+* {
+    font-family: Arial, sans-serif;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    padding:20px;
+    margin: 0 auto;
+}
+
+.text-input {
+    background-color: rgba(255, 255, 255, 100%);
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.text-input:hover {
+    background-color:lightblue;
+}
+
+.background-register {
+    background-image:url("../assets/imgforms.jpg");
+    background-size:cover
+}
+
+.background-login {
+    background-image:url("../assets/imgforms2.jpg");
+    background-size:cover
+}
+
+.container-fluid {
+    height: 100%
+}
+
+.row {
+    height:100%
+}
+
+.login-div {
+    justify-content: center;
+}
+
+.register-div {
+    justify-content: space-evenly;
+}
+
+.light-bold {
+    font-weight: bold
+}
+
+.err-msg {
+    font-size:12px;
+    font-weight: bold;
+}
+
+label {
+    font-size:12px;
+    font-weight:bold
+}
+
+.btn-register {
+    width:60%;
+    padding:4%;
+    margin: auto auto;
+    font-size:10px;
+    background-color: rgb(22, 72, 79)
+}
+
+.btn-register:hover {
+    background-color: rgb(18, 58, 64)
+}
+
+body {
+    height: 100vh;
+}
+
+#root {
+    height: 100%;
+    padding: 0;
+}
+
+.App {
+    height: 100%;
+}

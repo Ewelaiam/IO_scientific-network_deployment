@@ -1,0 +1,28 @@
+.result {
+    width:100%;
+    transition: background-color 0.3s;
+    height:20%;
+    cursor: pointer;
+    color:black;
+    background-color:white;
+    border:1px solid black;
+    padding:2px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    z-index:9999;
+    position:relative;
+}
+
+.result:hover {
+    background-color: #16484F;
+    border-radius: 3px;
+}
+
+.results {
+    margin-top:1vh;
+    position:fixed;
+    height:15vw;
+    width:25%;
+    z-index:9999;
+}
