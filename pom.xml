@@ -31,6 +31,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>
             <version>2.2</version>
@@ -142,7 +148,7 @@
                         <configuration>
                             <target>
                                 <copy todir="${project.build.directory}/classes/public">
-                                    <fileset dir="${project.basedir}/frontend"/>
+                                    <fileset dir="${project.basedir}/src/main/frontend"/>
                                 </copy>
                             </target>
                         </configuration>
