@@ -29,10 +29,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <configuration>
-                <executable>true</executable>
-                <mainClass>com.example.network.NetworkApplication</mainClass> <!-- add your actual main class -->
-            </configuration>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -59,7 +55,12 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <executable>true</executable>
+                    <mainClass>com.example.network.NetworkApplication</mainClass> <!-- add your actual main class -->
+                </configuration>
             </plugin>
+            
 
             <plugin>
                 <groupId>com.github.eirslett</groupId>
