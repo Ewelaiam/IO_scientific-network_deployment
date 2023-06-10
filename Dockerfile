@@ -4,4 +4,4 @@ RUN mkdir -p $HOME
 WORKDIR $HOME
 ADD . $HOME
 RUN mvn package && rm -fr src/main/frontend/node*
-EXPOSE 8080
+EXPOSE 5173
