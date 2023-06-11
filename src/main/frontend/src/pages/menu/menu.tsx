@@ -7,7 +7,7 @@ export default function Menu() {
 
 
             <Link to="/network">Network</Link>
-            <Link to="/profile">profile</Link>
+            <Link to="/profil">profile</Link>
             <Link to="/login">login</Link>
         </div>
     );

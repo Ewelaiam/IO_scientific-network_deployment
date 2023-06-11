@@ -9,7 +9,6 @@ export const fetchData = <T,>(url: string) => (
         }
         setError(response.statusText);
     }).then(data => {
-        console.log('data', data)
         setData(data);
     })
         .catch((e) => {
@@ -31,20 +30,16 @@ const genericQuery = (method: string) => <T,R,>(url: string, data: T) => (
             "Content-type": "application/json"
         }
     }).then((response) => {
-        console.log('response', response)
         if(response.ok) {
             return response.json();
         }
         setError(response.statusText);
     }).then(data =>{
-        console.log('data', data)
         setData(data);
     })
     .catch((e) => {
-        console.log("ERR")
         setError(e.errorMessage);
     }).finally(() => {
-        console.log("IDK")
         setLoading(false);
     });
 }

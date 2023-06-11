@@ -50,7 +50,7 @@ export default function Network() {
         ]
     };
 
-    const [cookies, setCookies] = useCookies()
+    const [cookies, setCookies] = useCookies(['loginCookie'])
 
     const [networkAPI, setNetworkAPI] = useState(x)
 
@@ -59,7 +59,7 @@ export default function Network() {
             .then(data => data.json())
             .then(data => handleResponse(data))
     }, [])
-    
+
     const handleResponse = (data:any) => {
         let users : NetworkUser[] = []
         let myID = cookies.loginCookie
@@ -78,7 +78,7 @@ export default function Network() {
             let networkUser:NetworkUser = {
                 FirstName: user.name,
                 LastName: user.surname,
-                ImageLink: images[Math.floor(Math.random() * 3)],
+                ImageLink: user.imageUrl,
                 Universities: userOrg
             }
             users.push(networkUser)
@@ -97,18 +97,18 @@ export default function Network() {
             if(univ.Name == main.Name)
                 colors.push("00FF00");
         })
-        
+
         userUniversities.forEach((univ)=>{
             if(univ.Name == second.Name){
                 colors.push("FF0000");
             }
         })
-        
+
         userUniversities.forEach((univ)=>{
             if(univ.Name != main.Name && univ.Name != second.Name)
                 colors.push("0000FF");
         })
-        
+
         return colors;
     }
     function generateIcons(){

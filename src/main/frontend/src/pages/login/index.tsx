@@ -4,8 +4,6 @@ import '../../styles/Login.css';
 import {Link} from "react-router-dom";
 import {Err} from "../../types/Err";
 import {User} from "../../types/User";
-// @ts-ignore
-import Cookies from "js-cookie";
 import eventbus from "../eventbus/eventbus"
 import { useNavigate } from "react-router-dom"
 import { useCookies } from 'react-cookie';
@@ -17,11 +15,8 @@ function Login() {
         lastName: "",
         password: ""
     });
-    const [cookies, setLoginCookie] = useCookies(["loginCookie"])
+    const [cookies, setLoginCookie, removeCookie] = useCookies(["loginCookie"])
     const [errors, setErrors] = useState<Err[]>([])
-
-    const [options, setOptions] = useState([{id:-1, name:""}])
-    ;
     const handleSubmit : FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
         const requestOptions = {
@@ -42,13 +37,17 @@ function Login() {
         })
     }
 
-    const handleResponse = (data:any) => {
+    useEffect(() => {
+        if (cookies.loginCookie > 5) {
+            navigate("/profil/" + cookies.loginCookie)
+        }
+    }, [])
 
+
+    const handleResponse = (data:any) => {
         if(data!=-1) {
-            setLoginCookie("loginCookie", data)
-            Cookies.set("user_id", data)
-            eventbus.emit("login", true)
-            navigate("/profile/" + cookies.loginCookie)
+            setLoginCookie("loginCookie", data, {path : '/'})
+            navigate("/profil/" + data)
         }
     }
 

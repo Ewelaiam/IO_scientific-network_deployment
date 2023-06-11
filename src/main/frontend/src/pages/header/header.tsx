@@ -49,6 +49,8 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   justifyContent: 'center',
 }));
 
+
+
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
@@ -65,6 +67,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PrimarySearchAppBar() {
 
+  const [cookies, setCookie, removeCookie] = useCookies(['loginCookie'])
   const navigate = useNavigate()
   const [profUsers, setProfUsers] = useState<ProfileData[]>([])
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -84,9 +87,6 @@ export default function PrimarySearchAppBar() {
     clearTimeout(timeout)
     timeout = setTimeout(() => requestSearch(event.target.value), 200 );
   }
-
-  const [cookies, setLoginCookie] = useCookies(["loginCookie"])
-
   const requestSearch = (query: String) => {
     const fetchUrl = 'http://localhost:8080/profile/'+cookies.loginCookie+'/users?query='+query;
     fetch(fetchUrl)
@@ -97,7 +97,6 @@ export default function PrimarySearchAppBar() {
 
 
   const fillResults = (users: ProfileData[]) => {
-    console.log("Users")
     setProfUsers(users)
   }
 
@@ -112,15 +111,12 @@ export default function PrimarySearchAppBar() {
     handleMobileMenuClose();
   };
 
-  eventbus.subscribe("login", (data:boolean) => {setLoggedIn(data)})
-
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const [loggedIn, setLoggedIn] = useState(false)
   const handleLogOut = () => {
-    setLoggedIn(false)
+    removeCookie("loginCookie", {path:'/'})
     navigate("/login")
   }
 
@@ -141,7 +137,7 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={() => navigate('/profile/' + cookies.loginCookie)}>Profile</MenuItem>
+      <MenuItem onClick={() => navigate('/profil/' + cookies.loginCookie)}>Profile</MenuItem>
       <MenuItem onClick={handleLogOut}>Sign out</MenuItem>
     </Menu>
   );
@@ -169,7 +165,6 @@ export default function PrimarySearchAppBar() {
     >
     </Menu>
   );
-
   return (
     <div style={{position: "fixed", top: "0", width: "100%", left: "0"}}>
       <AppBar position="static" style={{ background: '#16484F' }}>
@@ -183,7 +178,7 @@ export default function PrimarySearchAppBar() {
           >
           </IconButton>
 
-          {loggedIn?<IconButton
+          {cookies.loginCookie != null && cookies.loginCookie != -1?<IconButton
             size="large"
             component="div"
             color="inherit"
@@ -192,7 +187,7 @@ export default function PrimarySearchAppBar() {
           >
             Network
           </IconButton>:<p></p>}
-          {loggedIn?
+          {cookies.loginCookie != null && cookies.loginCookie != -1?
               <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
@@ -209,7 +204,7 @@ export default function PrimarySearchAppBar() {
 
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            {loggedIn?<IconButton
+            {cookies.loginCookie != null && cookies.loginCookie != -1?<IconButton
               size="large"
               edge="end"
               aria-label="account of current user"

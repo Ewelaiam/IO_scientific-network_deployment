@@ -22,7 +22,7 @@ export default function SearchResults(props:SearchResultsProps) {
     const handleClick = (id: number|undefined) => {
         props.resetFun()
         if(id != undefined) {
-            navigate("/profile/"+id)
+            navigate("/profil/"+id)
         }
     }
 

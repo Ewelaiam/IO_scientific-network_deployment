@@ -3,6 +3,7 @@ export type ProfileData = {
     email?: string;
     name?: string;
     surname?: string;
+    imageUrl?: string;
     organisations: Organisation[];
 };
 
@@ -12,4 +13,3 @@ type Organisation = {
     name: string,
     mailTemplate: string
 }
-

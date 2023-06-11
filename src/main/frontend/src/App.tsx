@@ -25,7 +25,7 @@ function App() {
                 <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="/login" Component={Login} />
                 <Route path="/register" Component={Register}/>
-                <Route path="/profile/:id" Component={Profile} />
+                <Route path="/profil/:id" Component={Profile} />
                 <Route path="/network" Component={Network} />
                 <Route path="/:path" Component={PageNotFound} />
             </Routes>

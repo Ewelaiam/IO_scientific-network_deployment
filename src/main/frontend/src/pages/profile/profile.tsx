@@ -10,31 +10,21 @@ import { useEffect, useState } from 'react';
 import { ProfileData } from '../../types/ProfileData';
 import { Err } from '../../types/Err';
 import { Organisation } from "../../types/Organisation";
-// @ts-ignore
-import Cookies from "js-cookie";
-import eventbus from '../eventbus/eventbus'
 import { useCookies } from "react-cookie";
 import { useLocation, useParams } from "react-router-dom";
 import { deleteData, fetchData, postData, putData } from '../../utils/fetchApi';
 
-
-function editProfileData() {
-    console.log('edit');
-}
-
 // const fetchProfileData = fetchData<ProfileData>('http://localhost:8080/profile/' + Cookies.get("user_id"));
 export default function Profile(props: any) {
-
-    const [cookies, setCookie] = useCookies()
+    const [cookies, setCookies] = useCookies(['loginCookie'])
     const [errors, setErrors] = useState<Err[]>([])
-
     const [open, setOpen] = useState<boolean>(false);
     const [openAddInterest, setOpenAddInterest] = useState<boolean>(false);
     const [editInterest, setEditInterest] = useState<boolean>(true);
     const [interestButton, setInterestButton] = useState<string>("Edit");
     const { id } = useParams()
+    const [update, setUpdate] = useState(0);
     const [isOwner, setIsOwner] = useState(true);
-
     const [showAdminModal, setShowAdminModal] = useState<boolean>(false);
     const [showAdminButton, setShowAdminButton] = useState<boolean>(true);
     // Interests
@@ -58,6 +48,7 @@ export default function Profile(props: any) {
             mailTemplate: ''
         }]
     });
+
     const fetchProfileData = fetchData<ProfileData>('http://localhost:8080/profile/' + id);
     const fetchInterests = fetchData<string[]>('http://localhost:8080/profile/interests/' + id);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -107,6 +98,39 @@ export default function Profile(props: any) {
         }
     };
 
+    const uploadProfilePicture = () => {
+        if (!isOwner) {
+            return;
+        }
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.addEventListener('change', function(event) {
+            if(fileInput.files != null) {
+                const picture = fileInput.files[0];
+                const formData = new FormData();
+                formData.append('photo', picture);
+
+                fetch('http://localhost:8080/profile/'+cookies.loginCookie+ '/photo/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        response.json().then(res2 => {
+                            setProfileData(res2)
+                        })
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        setUpdate(update + 1)
+                    });
+
+            }
+
+        });
+        fileInput.click();
+
+    }
+
     const handleOrganisationSave = (acceptedOrganisationData: Organisation) => {
         postData('http://localhost:8080/organisation/verify?role=ROLE_ADMIN', acceptedOrganisationData)
         // fetch('http://localhost:8080/organisation/verify?role=ROLE_ADMIN', requestOptions).then(data => handleResponseFromAdminModal(data, acceptedOrganisationData));
@@ -152,7 +176,7 @@ export default function Profile(props: any) {
     useEffect(() => {
         fetchProfileData(setProfileData, setIsLoading, setErrorMessage);
         fetchInterests(handleInterests, setIsLoading, setErrorMessage);
-        setIsOwner(id == Cookies.get("user_id"))
+        setIsOwner(id == cookies.loginCookie);
     }, [id]);
 
     if (errorMessage) return <div>{errorMessage} - could not load profile data</div>;
@@ -177,6 +201,10 @@ export default function Profile(props: any) {
                 <Grid m={6}>
                     <Avatar>{profileData.surname?.at(0)}{profileData.name?.at(0)}</Avatar>
                     <InfoBubble
+                        isOwner = {isOwner}
+                        up = {update}
+                        uploadFunction = {uploadProfilePicture}
+                        imageUrl={profileData.imageUrl ?? ''}
                         name={profileData.name ?? ''}
                         surname={profileData.surname ?? ''}
                         organisations={profileData.organisations ?? ''}

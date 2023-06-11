@@ -14,6 +14,7 @@ export function generateStyle(colors: string[], alpha = 1) {
                 const color = hexToRgb(colors[0]);
                 circleStyle = {
                     background: `rgba(${color.red}, ${color.green}, ${color.blue}, ${alpha})`,
+                    backgroundSize: 'cover'
                 };
             }
             break;

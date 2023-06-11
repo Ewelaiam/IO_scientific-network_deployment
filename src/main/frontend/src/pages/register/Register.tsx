@@ -2,6 +2,7 @@ import React, {useState, useEffect, FormEventHandler, ChangeEventHandler} from "
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/Login.css';
 import { useNavigate } from "react-router-dom"
+import {useCookies} from "react-cookie";
 
 
 
@@ -35,7 +36,6 @@ function Register() {
     const [addNewUniversityName, setAddNewUniversityName] = useState<string>();
     const [addNewMailTemplate, setAddNewMailTemplate] = useState<string>();
 
-    const [options, setOptions] = useState([{id:-1, name:""}, {id:1, name:"Akademia Górniczo Hutnicza"}]);
     const handleSubmit : FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
         const requestOptions = {
@@ -60,6 +60,14 @@ function Register() {
         })
         deleteError(event.target.name)
     }
+
+    const [cookies, setLoginCookie, removeCookie] = useCookies(["loginCookie"])
+
+    useEffect(() => {
+        if (cookies.loginCookie > 5) {
+            navigate("/profil/" + cookies.loginCookie)
+        }
+    }, [])
 
     const checkError = (property:String) => {
         for(let i = 0; i < errors.length; i++) {
@@ -87,7 +95,6 @@ function Register() {
     }
 
     const handleAddUniBtn = () => {
-        console.log("elo");
         setAddUni(!addUni);
     }
 
@@ -104,6 +111,7 @@ function Register() {
             ...(addNewUniversityName ? { name: addNewUniversityName } : {}),
             ...(addNewMailTemplate ? { mailTemplate: addNewMailTemplate } : {}),
         };
+        setAddUni(!addUni)
 
         const requestOptions = {
             method: 'POST',
@@ -111,6 +119,8 @@ function Register() {
             body: JSON.stringify(addNewOrganisationData)
         };
         fetch('http://localhost:8080/organisation/uni', requestOptions).then(data => handleResponseForAddingUni(data));
+        setAddNewMailTemplate("")
+        setAddNewUniversityName("")
     }
 
 
@@ -119,8 +129,9 @@ function Register() {
             <div className={"row"}>
                 <div className={"col-5 d-flex align-items-center flex-column register-div"}>
                     <h3 className={"text-center light-bold"}>Join your academic community!</h3>
+                    <div onClick={handleAddUniBtn} > + add new university</div>
+
                     <form onSubmit={handleSubmit} className="form-container">
-                        <div onClick={handleAddUniBtn}>Add new university</div>
                         {
                             addUni &&
                             <div>
@@ -142,10 +153,10 @@ function Register() {
                                     onChange={e => setAddNewMailTemplate(e.target.value)}
                                     className={checkError("mailTemplate") ? "form-control text-center text-danger" : "form-control mb-4 text-center"}
                                 />
-                                <div onClick={submitAddUni}>Send to verify</div>
+                                <button onClick={submitAddUni} className={"btn btn-primary btn-register"}>Send to verify</button>
                             </div>
-
                         }
+
                         <label htmlFor="name">Name:</label>
                         <input
                             name="name"
