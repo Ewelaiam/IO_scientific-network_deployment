@@ -1,10 +1,3 @@
-FROM postgres:latest
-ENV POSTGRES_USER postgres
-ENV POSTGRES_PASSWORD postgres
-ENV POSTGRES_DB test_IO
-EXPOSE 5432
-
-
 FROM maven:3.9-amazoncorretto-17 as build
 ENV HOME=/usr/app
 RUN mkdir -p $HOME
